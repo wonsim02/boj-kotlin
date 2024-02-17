@@ -12,13 +12,26 @@ import java.util.Scanner
 object Problem01006 {
 
     private const val INFINITY = 20001
+    private const val MAX_N = 10000
 
     private const val INNER = 0
     private const val OUTER = 1
 
     private val scanner = Scanner(System.`in`)
+    private val numEnemiesInArea: List<MutableList<Int>> = List(2) { MutableList(MAX_N) { 0 } }
+
+    private fun initNumEnemiesInArea(n: Int) {
+        (INNER..OUTER).forEach { index0 ->
+            (0 until n).forEach { index1 ->
+                numEnemiesInArea[index0][index1] = scanner.nextInt()
+            }
+        }
+    }
 
     fun solve() {
+        var n: Int
+        var w: Int
+
         var flag0: Boolean
         var flag1: Boolean
         var flag2: Boolean
@@ -37,12 +50,9 @@ object Problem01006 {
         var currentMinNumbers: MutableList<Int>
 
         for (t in (1..scanner.nextInt())) {
-            val n = scanner.nextInt()
-            val w = scanner.nextInt()
-
-            val numEnemiesInArea = (1..2).map {
-                (1..n).map { scanner.nextInt() }
-            }
+            n = scanner.nextInt()
+            w = scanner.nextInt()
+            initNumEnemiesInArea(n)
 
             if (n == 1) {
                 if (numEnemiesInArea[INNER][0] + numEnemiesInArea[OUTER][0] <= w) {
