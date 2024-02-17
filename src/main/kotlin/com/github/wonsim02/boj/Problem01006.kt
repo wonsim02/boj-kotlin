@@ -1,5 +1,7 @@
 package com.github.wonsim02.boj
 
+import java.util.Scanner
+
 /**
  * [1006번 문제](https://www.acmicpc.net/problem/1006)에 대한 답안. ([제출된 답안](http://boj.kr/84490a63740d44b78510b5362e49081c))
  * 1. `i`, `n+i` 둘 다 사용 가능
@@ -13,6 +15,8 @@ object Problem01006 {
 
     private const val INNER = 0
     private const val OUTER = 1
+
+    private val scanner = Scanner(System.`in`)
 
     fun solve() {
         var flag0: Boolean
@@ -32,15 +36,12 @@ object Problem01006 {
         var previousMinNumbers: List<Int>
         var currentMinNumbers: MutableList<Int>
 
-        for (t in (1..readLine()!!.toInt())) {
-            val (n, w) = readLine()!!
-                .split(" ", ignoreCase = false, limit = 2)
-                .map { it.toInt() }
+        for (t in (1..scanner.nextInt())) {
+            val n = scanner.nextInt()
+            val w = scanner.nextInt()
 
             val numEnemiesInArea = (1..2).map {
-                readLine()!!
-                    .split(" ", ignoreCase = false, limit = n)
-                    .map { it.toInt() }
+                (1..n).map { scanner.nextInt() }
             }
 
             if (n == 1) {
