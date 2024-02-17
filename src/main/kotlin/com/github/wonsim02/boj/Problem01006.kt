@@ -19,6 +19,7 @@ object Problem01006 {
 
     private val scanner = Scanner(System.`in`)
     private val numEnemiesInArea: List<MutableList<Int>> = List(2) { MutableList(MAX_N) { 0 } }
+    private val minNumbers: MutableList<Int> = MutableList(MAX_N * 16) { 0 }
 
     private fun initNumEnemiesInArea(n: Int) {
         (INNER..OUTER).forEach { index0 ->
@@ -26,6 +27,20 @@ object Problem01006 {
                 numEnemiesInArea[index0][index1] = scanner.nextInt()
             }
         }
+    }
+
+    @Suppress("NOTHING_TO_INLINE")
+    private inline fun getMinNumbers(index0: Int, index1: Int, index2: Int): Int {
+        return minNumbers[index0 * 16 + index1 * 4 + index2]
+    }
+
+    private inline fun setMinNumbers(
+        index0: Int,
+        index1: Int,
+        index2: Int,
+        valueGetter: () -> Int,
+    ) {
+        minNumbers[index0 * 16 + index1 * 4 + index2] = valueGetter()
     }
 
     fun solve() {
@@ -45,9 +60,7 @@ object Problem01006 {
         var prev0: Int
         var prev1: Int
         var prev2: Int
-
-        var previousMinNumbers: List<Int>
-        var currentMinNumbers: MutableList<Int>
+        var prev3: Int
 
         for (t in (1..scanner.nextInt())) {
             n = scanner.nextInt()
@@ -79,14 +92,13 @@ object Problem01006 {
                 continue
             }
 
-            val minNumbers = List(n-1) { List(4) { ArrayList<Int>(4) } }
             flag0 = numEnemiesInArea[INNER][0] + numEnemiesInArea[INNER][n-1] <= w
             flag1 = numEnemiesInArea[OUTER][0] + numEnemiesInArea[OUTER][n-1] <= w
             flag2 = numEnemiesInArea[INNER][0] + numEnemiesInArea[OUTER][0] <= w
 
             for (index0 in 0 until 4) {
                 for (index1 in 0 until 4) {
-                    minNumbers[0][index0].add(
+                    setMinNumbers(0, index0, index1) {
                         when {
                             index0 == 0 && index1 == 3 && flag2 -> 1
                             index0 == 0 && index1 == 0 -> 2
@@ -95,7 +107,7 @@ object Problem01006 {
                             index0 == 3 && index1 == 3 && flag0 && flag1 -> 2
                             else -> INFINITY
                         }
-                    )
+                    }
                 }
             }
 
@@ -105,41 +117,39 @@ object Problem01006 {
                 flag2 = numEnemiesInArea[INNER][i] + numEnemiesInArea[OUTER][i] <= w
 
                 for (index0 in 0 until 4) {
-                    previousMinNumbers = minNumbers[i-1][index0]
-                    currentMinNumbers = minNumbers[i][index0]
+                    prev0 = getMinNumbers(i-1, index0, 0)
+                    prev1 = getMinNumbers(i-1, index0, 1)
+                    prev2 = getMinNumbers(i-1, index0, 2)
+                    prev3 = getMinNumbers(i-1, index0, 3)
 
-                    prev0 = previousMinNumbers[0]
-                    prev1 = previousMinNumbers[1]
-                    prev2 = previousMinNumbers[2]
-
-                    m = minOf(prev0, prev1, prev2, previousMinNumbers[3])
-                    currentMinNumbers.add(
+                    m = minOf(prev0, prev1, prev2, prev3)
+                    setMinNumbers(i, index0, 0) {
                         if (m != INFINITY) {
                             m + 2
                         } else {
                             INFINITY
                         }
-                    )
+                    }
 
                     m02 = minOf(prev0, prev2)
-                    currentMinNumbers.add(
+                    setMinNumbers(i, index0, 1) {
                         if (m02 != INFINITY && flag1) {
                             m02 + 1
                         } else {
                             INFINITY
                         }
-                    )
+                    }
 
                     m01 = minOf(prev0, prev1)
-                    currentMinNumbers.add(
+                    setMinNumbers(i, index0, 2) {
                         if (m01 != INFINITY && flag0) {
                             m01 + 1
                         } else {
                             INFINITY
                         }
-                    )
+                    }
 
-                    currentMinNumbers.add(
+                    setMinNumbers(i, index0, 3) {
                         minOf(
                             if (m != INFINITY && flag2) {
                                 m + 1
@@ -152,7 +162,7 @@ object Problem01006 {
                                 INFINITY
                             },
                         )
-                    )
+                    }
                 }
             }
 
@@ -162,13 +172,12 @@ object Problem01006 {
 
             result = INFINITY
             for (index0 in 0 until 4) {
-                previousMinNumbers = minNumbers[n-2][index0]
+                prev0 = getMinNumbers(n-2, index0, 0)
+                prev1 = getMinNumbers(n-2, index0, 1)
+                prev2 = getMinNumbers(n-2, index0, 2)
+                prev3 = getMinNumbers(n-2, index0, 3)
 
-                prev0 = previousMinNumbers[0]
-                prev1 = previousMinNumbers[1]
-                prev2 = previousMinNumbers[2]
-
-                m = minOf(prev0, prev1, prev2, previousMinNumbers[3])
+                m = minOf(prev0, prev1, prev2, prev3)
                 m01 = minOf(prev0, prev1)
                 m02 = minOf(prev0, prev2)
 
