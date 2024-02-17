@@ -18,8 +18,8 @@ object Problem01006 {
     private const val OUTER = 1
 
     private val scanner = Scanner(System.`in`)
-    private val numEnemiesInArea: List<MutableList<Short>> = List(2) { MutableList(MAX_N) { 0 } }
-    private val minNumbers: MutableList<Short> = MutableList(MAX_N * 16) { 0 }
+    private val numEnemiesInArea: Array<Array<Short>> = Array(2) { Array(MAX_N) { 0 } }
+    private val minNumbers: Array<Short> = Array(MAX_N * 16) { 0 }
 
     private fun initNumEnemiesInArea(n: Int) {
         (INNER..OUTER).forEach { index0 ->
