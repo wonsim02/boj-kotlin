@@ -11,6 +11,9 @@ object Problem01006 {
 
     private const val INFINITY = 20001
 
+    private const val INNER = 0
+    private const val OUTER = 1
+
     fun solve() {
         var flag0: Boolean
         var flag1: Boolean
@@ -41,7 +44,7 @@ object Problem01006 {
             }
 
             if (n == 1) {
-                if (numEnemiesInArea[0][0] + numEnemiesInArea[1][0] <= w) {
+                if (numEnemiesInArea[INNER][0] + numEnemiesInArea[OUTER][0] <= w) {
                     println(1)
                 } else {
                     println(2)
@@ -50,10 +53,10 @@ object Problem01006 {
             }
 
             if (n == 2) {
-                flag0 = numEnemiesInArea[0][0] + numEnemiesInArea[1][0] <= w
-                flag1 = numEnemiesInArea[0][1] + numEnemiesInArea[1][1] <= w
-                flag2 = numEnemiesInArea[0][0] + numEnemiesInArea[0][1] <= w
-                flag3 = numEnemiesInArea[1][0] + numEnemiesInArea[1][1] <= w
+                flag0 = numEnemiesInArea[INNER][0] + numEnemiesInArea[OUTER][0] <= w
+                flag1 = numEnemiesInArea[INNER][1] + numEnemiesInArea[OUTER][1] <= w
+                flag2 = numEnemiesInArea[INNER][0] + numEnemiesInArea[INNER][1] <= w
+                flag3 = numEnemiesInArea[OUTER][0] + numEnemiesInArea[OUTER][1] <= w
 
                 if (flag0 && flag1 || flag2 && flag3) {
                     println(2)
@@ -66,9 +69,9 @@ object Problem01006 {
             }
 
             val minNumbers = List(n-1) { List(4) { ArrayList<Int>(4) } }
-            flag0 = numEnemiesInArea[0][0] + numEnemiesInArea[0][n-1] <= w
-            flag1 = numEnemiesInArea[1][0] + numEnemiesInArea[1][n-1] <= w
-            flag2 = numEnemiesInArea[0][0] + numEnemiesInArea[1][0] <= w
+            flag0 = numEnemiesInArea[INNER][0] + numEnemiesInArea[INNER][n-1] <= w
+            flag1 = numEnemiesInArea[OUTER][0] + numEnemiesInArea[OUTER][n-1] <= w
+            flag2 = numEnemiesInArea[INNER][0] + numEnemiesInArea[OUTER][0] <= w
 
             for (index0 in 0 until 4) {
                 for (index1 in 0 until 4) {
@@ -86,9 +89,9 @@ object Problem01006 {
             }
 
             for (i in 1 until n-1) {
-                flag0 = numEnemiesInArea[0][i-1] + numEnemiesInArea[0][i] <= w
-                flag1 = numEnemiesInArea[1][i-1] + numEnemiesInArea[1][i] <= w
-                flag2 = numEnemiesInArea[0][i] + numEnemiesInArea[1][i] <= w
+                flag0 = numEnemiesInArea[INNER][i-1] + numEnemiesInArea[INNER][i] <= w
+                flag1 = numEnemiesInArea[OUTER][i-1] + numEnemiesInArea[OUTER][i] <= w
+                flag2 = numEnemiesInArea[INNER][i] + numEnemiesInArea[OUTER][i] <= w
 
                 for (index0 in 0 until 4) {
                     previousMinNumbers = minNumbers[i-1][index0]
@@ -142,9 +145,9 @@ object Problem01006 {
                 }
             }
 
-            flag0 = numEnemiesInArea[0][n-2] + numEnemiesInArea[0][n-1] <= w
-            flag1 = numEnemiesInArea[1][n-2] + numEnemiesInArea[1][n-1] <= w
-            flag2 = numEnemiesInArea[0][n-1] + numEnemiesInArea[1][n-1] <= w
+            flag0 = numEnemiesInArea[INNER][n-2] + numEnemiesInArea[INNER][n-1] <= w
+            flag1 = numEnemiesInArea[OUTER][n-2] + numEnemiesInArea[OUTER][n-1] <= w
+            flag2 = numEnemiesInArea[INNER][n-1] + numEnemiesInArea[OUTER][n-1] <= w
 
             result = INFINITY
             for (index0 in 0 until 4) {
