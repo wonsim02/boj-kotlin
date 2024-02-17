@@ -11,26 +11,26 @@ import java.util.Scanner
  */
 object Problem01006 {
 
-    private const val INFINITY = 20001
+    private const val INFINITY: Short = 20001
     private const val MAX_N = 10000
 
     private const val INNER = 0
     private const val OUTER = 1
 
     private val scanner = Scanner(System.`in`)
-    private val numEnemiesInArea: List<MutableList<Int>> = List(2) { MutableList(MAX_N) { 0 } }
-    private val minNumbers: MutableList<Int> = MutableList(MAX_N * 16) { 0 }
+    private val numEnemiesInArea: List<MutableList<Short>> = List(2) { MutableList(MAX_N) { 0 } }
+    private val minNumbers: MutableList<Short> = MutableList(MAX_N * 16) { 0 }
 
     private fun initNumEnemiesInArea(n: Int) {
         (INNER..OUTER).forEach { index0 ->
             (0 until n).forEach { index1 ->
-                numEnemiesInArea[index0][index1] = scanner.nextInt()
+                numEnemiesInArea[index0][index1] = scanner.nextShort()
             }
         }
     }
 
     @Suppress("NOTHING_TO_INLINE")
-    private inline fun getMinNumbers(index0: Int, index1: Int, index2: Int): Int {
+    private inline fun getMinNumbers(index0: Int, index1: Int, index2: Int): Short {
         return minNumbers[index0 * 16 + index1 * 4 + index2]
     }
 
@@ -38,7 +38,7 @@ object Problem01006 {
         index0: Int,
         index1: Int,
         index2: Int,
-        valueGetter: () -> Int,
+        valueGetter: () -> Short,
     ) {
         minNumbers[index0 * 16 + index1 * 4 + index2] = valueGetter()
     }
@@ -52,15 +52,15 @@ object Problem01006 {
         var flag2: Boolean
         var flag3: Boolean
 
-        var m: Int
-        var m01: Int
-        var m02: Int
-        var result: Int
+        var m: Short
+        var m01: Short
+        var m02: Short
+        var result: Short
 
-        var prev0: Int
-        var prev1: Int
-        var prev2: Int
-        var prev3: Int
+        var prev0: Short
+        var prev1: Short
+        var prev2: Short
+        var prev3: Short
 
         for (t in (1..scanner.nextInt())) {
             n = scanner.nextInt()
@@ -125,7 +125,7 @@ object Problem01006 {
                     m = minOf(prev0, prev1, prev2, prev3)
                     setMinNumbers(i, index0, 0) {
                         if (m != INFINITY) {
-                            m + 2
+                            (m + 2).toShort()
                         } else {
                             INFINITY
                         }
@@ -134,7 +134,7 @@ object Problem01006 {
                     m02 = minOf(prev0, prev2)
                     setMinNumbers(i, index0, 1) {
                         if (m02 != INFINITY && flag1) {
-                            m02 + 1
+                            (m02 + 1).toShort()
                         } else {
                             INFINITY
                         }
@@ -143,7 +143,7 @@ object Problem01006 {
                     m01 = minOf(prev0, prev1)
                     setMinNumbers(i, index0, 2) {
                         if (m01 != INFINITY && flag0) {
-                            m01 + 1
+                            (m01 + 1).toShort()
                         } else {
                             INFINITY
                         }
@@ -152,7 +152,7 @@ object Problem01006 {
                     setMinNumbers(i, index0, 3) {
                         minOf(
                             if (m != INFINITY && flag2) {
-                                m + 1
+                                (m + 1).toShort()
                             } else {
                                 INFINITY
                             },
@@ -182,26 +182,26 @@ object Problem01006 {
                 m02 = minOf(prev0, prev2)
 
                 if (index0 == 0) {
-                    result = minOf(result, m + 2)
+                    result = minOf(result, (m + 2).toShort())
                     if (m != INFINITY && flag2) {
-                        result = minOf(result, m + 1)
+                        result = minOf(result, (m + 1).toShort())
                     }
                     if (m02 != INFINITY && flag1) {
-                        result = minOf(result, m02 + 1)
+                        result = minOf(result, (m02 + 1).toShort())
                     }
                     if (m01 != INFINITY && flag0) {
-                        result = minOf(result, m01 + 1)
+                        result = minOf(result, (m01 + 1).toShort())
                     }
                     if (prev0 != INFINITY && flag0 && flag1) {
                         result = minOf(result, prev0)
                     }
                 } else if (index0 == 1) {
-                    result = minOf(result, m + 1)
+                    result = minOf(result, (m + 1).toShort())
                     if (m01 != INFINITY && flag0) {
                         result = minOf(result, m01)
                     }
                 } else if (index0 == 2) {
-                    result = minOf(result, m + 1)
+                    result = minOf(result, (m + 1).toShort())
                     if (m02 != INFINITY && flag1) {
                         result = minOf(result, m02)
                     }
